@@ -1,10 +1,14 @@
 #pragma once
+#include <iostream>
+
+#define MAX_SIZE (256)
 
 class MergeableHeap {
     public:
-        MergeableHeap(int value);
+        MergeableHeap(int * values, size_t length);
+
         int get_min();
 
-    private:
-        int _head;
+    protected:
+        int _list[MAX_SIZE];
 };

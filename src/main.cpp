@@ -1,7 +1,12 @@
 #include <iostream>
 #include <fstream>
 
+#include "operations_file.hpp"
+#include "mergeable_heap.hpp"
+
 using namespace std;
+
+#define ARRAY_LENGTH(arr) (sizeof(arr) / sizeof(arr[0]))
 
 int main(int argc, char **argv)
 {
@@ -10,12 +15,13 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    ifstream ops_file(argv[1]);
-    string op;
+    OperationsFile ops_file(argv[1]);
+    ops_file.print();
 
-    while (getline(ops_file, op)) {
-        cout << op << std::endl;
-    }
+    int l[] = {1, 2, 3};
+
+    MergeableHeap heap(l, ARRAY_LENGTH(l));
+    //cout << heap.get_min() << endl;
 
     return 0;
 }
