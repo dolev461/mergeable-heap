@@ -4,19 +4,9 @@ MergeableHeap::MergeableHeap() {
 }
 
 MergeableHeap::MergeableHeap(int * values, ssize_t length) {
-    Node * ileft = nullptr;
-    Node * iright = nullptr;
-
-    // Copy the given list to internal list
     for (int i = 0; i < length; i++) {
         insert(values[i]);
     }
-
-    /*
-    for (int i = (length / 2) - 1; i >= 0; i--) {
-        min_heapify(i);
-    }
-    */
 }
 
 void MergeableHeap::insert(int value) {
@@ -48,19 +38,16 @@ void MergeableHeap::insert(int value) {
     for (int i = 0; i < parent_index; i++) {
         it++;
     }
+
     if (list_size % 2 == 0) {
         it->left = &_list.back();
     } else {
         it->right = &_list.back();
     }
 
-    /*
-    _list[_length - 1].value = _list[0].value;
-    _list[0].value = value;
-
-    for (int i = (_length / 2) - 1; i >= 0; i--) {
+    for (int i = (list_size / 2) - 1; i >= 0; i--) {
         min_heapify(i);
-    }*/
+    }
 }
 
 int MergeableHeap::get_min() {
@@ -85,7 +72,7 @@ void MergeableHeap::min_heapify(int index) {
     Node * right = nullptr;
     Node * min = nullptr;
 
-    while (-1 != curr->left->value) {
+    while (nullptr != curr->left) {
         left = curr->left;
         right = curr->right;
 
@@ -95,7 +82,7 @@ void MergeableHeap::min_heapify(int index) {
             min = curr;
         }
 
-        if (-1 != right->value && right->value < min->value) {
+        if (nullptr != right && right->value < min->value) {
             min = right;
         }
 
