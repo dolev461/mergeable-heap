@@ -9,22 +9,51 @@ MergeableHeap::MergeableHeap(int * values, ssize_t length) {
 
     // Copy the given list to internal list
     for (int i = 0; i < length; i++) {
-        _list.push_back({
-            .value=values[i],
-            .left=nullptr,
-            .right=nullptr});
+        insert(values[i]);
     }
 
+    /*
     for (int i = (length / 2) - 1; i >= 0; i--) {
         min_heapify(i);
     }
+    */
 }
 
 void MergeableHeap::insert(int value) {
+    size_t list_size;
+    int parent_index;
+    Node * node;
+    list<Node>::iterator it = _list.begin();
+
+    if (it == _list.end()) {
+        _list.push_back({
+            .value=value,
+            .left=nullptr,
+            .right=nullptr
+        });
+        return;
+    }
+
+    node = &_list.front();
     _list.push_back({
-        .value=value,
+        .value=node->value,
         .left=nullptr,
-        .right=nullptr});
+        .right=nullptr,
+    });
+
+    node->value = value;
+
+    list_size = _list.size();
+    parent_index = (list_size / 2) - 1;
+    for (int i = 0; i < parent_index; i++) {
+        it++;
+    }
+    if (list_size % 2 == 0) {
+        it->left = &_list.back();
+    } else {
+        it->right = &_list.back();
+    }
+
     /*
     _list[_length - 1].value = _list[0].value;
     _list[0].value = value;
