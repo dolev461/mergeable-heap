@@ -13,7 +13,7 @@ struct Node {
 
 class MergeableHeap {
     public:
-        MergeableHeap();
+        MergeableHeap() {};
         MergeableHeap(int * values, ssize_t length);
 
         void insert(int value);
@@ -22,10 +22,9 @@ class MergeableHeap {
         void print();
     
     private:
-        Node * root;
-
         void min_heapify(int value);
-        void init();
+        void set_parent();
+        void sort();
 
     protected:
         list<Node> _list;

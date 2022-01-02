@@ -1,8 +1,5 @@
 #include "mergeable_heap.hpp"
 
-MergeableHeap::MergeableHeap() {
-}
-
 MergeableHeap::MergeableHeap(int * values, ssize_t length) {
     for (int i = 0; i < length; i++) {
         insert(values[i]);
@@ -10,12 +7,10 @@ MergeableHeap::MergeableHeap(int * values, ssize_t length) {
 }
 
 void MergeableHeap::insert(int value) {
-    size_t list_size;
-    int parent_index;
     Node * node;
-    list<Node>::iterator it = _list.begin();
 
-    if (it == _list.end()) {
+    if (_list.begin() == _list.end()) {
+        // First node
         _list.push_back({
             .value=value,
             .left=nullptr,
@@ -30,24 +25,10 @@ void MergeableHeap::insert(int value) {
         .left=nullptr,
         .right=nullptr,
     });
-
     node->value = value;
 
-    list_size = _list.size();
-    parent_index = (list_size / 2) - 1;
-    for (int i = 0; i < parent_index; i++) {
-        it++;
-    }
-
-    if (list_size % 2 == 0) {
-        it->left = &_list.back();
-    } else {
-        it->right = &_list.back();
-    }
-
-    for (int i = (list_size / 2) - 1; i >= 0; i--) {
-        min_heapify(i);
-    }
+    set_parent();
+    sort();
 }
 
 int MergeableHeap::get_min() {
@@ -96,5 +77,27 @@ void MergeableHeap::min_heapify(int index) {
         } else {
             break;
         }
+    }
+}
+
+void MergeableHeap::set_parent() {
+    int parent_index;
+    list<Node>::iterator it = _list.begin();
+
+    parent_index = (_list.size() / 2) - 1;
+    for (int i = 0; i < parent_index; i++) {
+        it++;
+    }
+
+    if (_list.size() % 2 == 0) {
+        it->left = &_list.back();
+    } else {
+        it->right = &_list.back();
+    }
+}
+
+void MergeableHeap::sort() {
+    for (int i = (_list.size() / 2) - 1; i >= 0; i--) {
+        min_heapify(i);
     }
 }
