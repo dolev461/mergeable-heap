@@ -26,6 +26,7 @@ class MergeableHeap {
         Node * root;
 
         void min_heapify(int value);
+        void init();
 
     protected:
         Node _list[MAX_SIZE];

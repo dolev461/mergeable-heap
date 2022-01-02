@@ -43,7 +43,7 @@ void OperationsFile::print() {
 
 bool OperationsFile::run(list<MergeableHeap> * heaps) {
     op_t op;
-    MergeableHeap heap;
+    MergeableHeap * heap = new MergeableHeap();
 
     next(&op);
     if (MAKEHEAP != op.id) {
@@ -60,13 +60,13 @@ bool OperationsFile::run(list<MergeableHeap> * heaps) {
         case MAKEHEAP:
             cout << "\nMake heap" << endl;
             // Push the last heap and create a new one
-            heaps->push_back(heap);
-            heap = MergeableHeap();
+            heaps->push_back(*heap);
+            heap = new MergeableHeap();
             break;
 
         case INSERT:
             cout << "Insert " << op.insert.value << endl;
-            heap.insert(op.insert.value);
+            heap->insert(op.insert.value);
             break;
         
         default:
@@ -75,6 +75,6 @@ bool OperationsFile::run(list<MergeableHeap> * heaps) {
         }
     } while (op.id != UNKNOWN);
 
-    heaps->push_back(heap);
+    heaps->push_back(*heap);
     return true;
 }

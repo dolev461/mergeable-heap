@@ -1,27 +1,38 @@
 #include "mergeable_heap.hpp"
 
-MergeableHeap::MergeableHeap() {
+void MergeableHeap::init() {
     _length = 0;
+
+    Node * ileft = nullptr;
+    Node * iright = nullptr;
+
+    for (int i = 0; i < ARRAY_LENGTH(_list); i++) {
+        ileft = _list + (2 * i) + 1;
+        iright = _list + (2 * i) + 2;
+
+        _list[i] = {
+            .value = -1,
+            .left = ileft,
+            .right = iright,
+        };
+    }
+}
+
+MergeableHeap::MergeableHeap() {
+    init();
 }
 
 MergeableHeap::MergeableHeap(int * values, ssize_t length) {
     _length = length;
 
+    Node * ileft = nullptr;
+    Node * iright = nullptr;
+
+    init();
+
     // Copy the given list to internal list
     for (int i = 0; i < length; i++) {
-        _list[i] = {
-            .value = values[i],
-            .left = _list + (2 * i) + 1,
-            .right = _list + (2 * i) + 2,
-        };
-    }
-
-    for (int i = length; i < ARRAY_LENGTH(_list); i++) {
-        _list[i] = {
-            .value = -1,
-            .left = nullptr,
-            .right = nullptr,
-        };
+        _list[i].value = values[i];
     }
 
     for (int i = (length / 2) - 1; i >= 0; i--) {
@@ -30,8 +41,11 @@ MergeableHeap::MergeableHeap(int * values, ssize_t length) {
 }
 
 void MergeableHeap::insert(int value) {
-    _list[_length].value = value;
     _length++;
+    _list[_length - 1].value = _list[0].value;
+    _list[0].value = value;
+
+    min_heapify(0);
 }
 
 int MergeableHeap::get_min() {

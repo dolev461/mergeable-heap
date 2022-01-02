@@ -28,9 +28,10 @@ int main(int argc, char **argv)
     //cout << heap.get_min() << endl;
 
     // int l[] = {1, 2, 3, 4, 5};//, 6};
+    /*
     int l[] = {5, 4, 3, 2, 1};//, 6};
     MergeableHeap heap(l, sizeof(l)/sizeof(*l));
-    heap.print();
+    heap.print();*/
 
     return 0;
 }
