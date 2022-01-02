@@ -1,38 +1,18 @@
 #include "mergeable_heap.hpp"
 
-void MergeableHeap::init() {
-    _length = 0;
-
-    Node * ileft = nullptr;
-    Node * iright = nullptr;
-
-    for (int i = 0; i < ARRAY_LENGTH(_list); i++) {
-        ileft = _list + (2 * i) + 1;
-        iright = _list + (2 * i) + 2;
-
-        _list[i] = {
-            .value = -1,
-            .left = ileft,
-            .right = iright,
-        };
-    }
-}
-
 MergeableHeap::MergeableHeap() {
-    init();
 }
 
 MergeableHeap::MergeableHeap(int * values, ssize_t length) {
-    _length = length;
-
     Node * ileft = nullptr;
     Node * iright = nullptr;
 
-    init();
-
     // Copy the given list to internal list
     for (int i = 0; i < length; i++) {
-        _list[i].value = values[i];
+        _list.push_back({
+            .value=values[i],
+            .left=nullptr,
+            .right=nullptr});
     }
 
     for (int i = (length / 2) - 1; i >= 0; i--) {
@@ -41,32 +21,37 @@ MergeableHeap::MergeableHeap(int * values, ssize_t length) {
 }
 
 void MergeableHeap::insert(int value) {
-    _length++;
+    _list.push_back({
+        .value=value,
+        .left=nullptr,
+        .right=nullptr});
+    /*
     _list[_length - 1].value = _list[0].value;
     _list[0].value = value;
 
-    min_heapify(0);
+    for (int i = (_length / 2) - 1; i >= 0; i--) {
+        min_heapify(i);
+    }*/
 }
 
 int MergeableHeap::get_min() {
-    return _list[0].value;
+    return _list.begin()->value;
 }
 
 void MergeableHeap::print() {
     cout << "[";
-    for (int i = 0; i < _length - 1; i++) {
-        cout << _list[i].value << ", ";
-    }
-
-    if (0 <= _length - 1) {
-        cout << _list[_length - 1].value;
+    for (auto it : _list) {
+        cout << it.value << ", ";
     }
 
     cout << "]" << endl;
 }
 
 void MergeableHeap::min_heapify(int index) {
-    Node * curr = &_list[index];
+    list<Node>::iterator it = _list.begin();
+    advance(it, index);
+
+    Node * curr = &(*it);
     Node * left = nullptr;
     Node * right = nullptr;
     Node * min = nullptr;

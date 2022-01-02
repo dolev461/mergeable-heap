@@ -4,7 +4,7 @@ project(maman14 VERSION 0.1.0)
 include(CTest)
 enable_testing()
 
-add_executable(maman14 src/main.cpp src/mergeable_heap.cpp src/operations_file.cpp)
+add_executable(maman14 src/main.cpp src/mergeable_heap.cpp src/operations_file.cpp src/linked_list.cpp)
 include_directories(include)
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})

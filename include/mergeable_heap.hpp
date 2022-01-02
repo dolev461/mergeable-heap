@@ -1,8 +1,7 @@
 #pragma once
 #include <iostream>
-
-#define MAX_SIZE (256)
-#define ARRAY_LENGTH(arr) (sizeof(arr) / sizeof(arr[0]))
+#include <list>
+#include <iterator>
 
 using namespace std;
 
@@ -29,6 +28,5 @@ class MergeableHeap {
         void init();
 
     protected:
-        Node _list[MAX_SIZE];
-        ssize_t _length;
+        list<Node> _list;
 };
