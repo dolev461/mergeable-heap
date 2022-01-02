@@ -3,19 +3,12 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <list>
+
+#include "operations.hpp"
+#include "mergeable_heap.hpp"
 
 using namespace std;
-
-typedef enum op_e {
-    UNKNOWN = -1,
-    MAKE_HEAP = 0,
-    INSERT = 1,
-} op_id_t;
-
-typedef struct operation {
-    op_id_t id;
-    int extra;
-} op_t;
 
 class OperationsFile {
     public:
@@ -23,6 +16,8 @@ class OperationsFile {
 
         void next(op_t * op);
         void print();
+
+        bool run(list<MergeableHeap> * heaps);
 
     protected:
         ifstream _file;
