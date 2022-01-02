@@ -8,11 +8,11 @@ The cases to handle are: </br>
 3. Unsorted list, groups to merge are foreign
 
 ## Actions
-MakeHeap : Make an empty mergeable heap</br>
-Insert X : Insert a number X to the heap</br>
-Minimum : </br>
-ExtractMin : </br>
-Union : </br>
+MakeHeap: Make an empty mergeable heap</br>
+Insert X: Insert a number X to the heap</br>
+Minimum: </br>
+ExtractMin: </br>
+Union: </br>
 
 ## Optimization
 ### Sorted list
