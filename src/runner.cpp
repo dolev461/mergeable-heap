@@ -1,17 +1,24 @@
-#include "operations_file.hpp"
+#include "runner.hpp"
 
-OperationsFile::OperationsFile(string path) {
+Runner::Runner() {
+}
+
+Runner::Runner(string path) {
     _file.open(path);
 }
 
-void OperationsFile::next(op_t * op) {
+void Runner::next(op_t * op) {
     string op_txt;
     stringstream int_val;
     int num = 0;
 
     op->id = UNKNOWN;
 
-    getline(_file, op_txt);
+    if (_file.is_open()) {
+        getline(_file, op_txt);
+    } else {
+        getline(cin, op_txt);
+    }
 
     // Erase carriage return from line if exists
     if (op_txt[op_txt.size() - 1] == '\r') {
@@ -32,7 +39,7 @@ void OperationsFile::next(op_t * op) {
     } 
 }
 
-void OperationsFile::print() {
+void Runner::print() {
     op_t op;
     
     do {
@@ -41,7 +48,7 @@ void OperationsFile::print() {
     } while (op.id != UNKNOWN);
 }
 
-bool OperationsFile::run(list<MergeableHeap> * heaps) {
+bool Runner::run(list<MergeableHeap> * heaps) {
     op_t op;
     MergeableHeap * heap = new MergeableHeap();
 

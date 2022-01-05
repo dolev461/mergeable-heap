@@ -2,7 +2,7 @@
 #include <fstream>
 #include <list>
 
-#include "operations_file.hpp"
+#include "runner.hpp"
 #include "mergeable_heap.hpp"
 
 using namespace std;
@@ -13,14 +13,20 @@ int main(int argc, char **argv)
 {
     list<MergeableHeap> heaps;
     list<MergeableHeap>::iterator it;
+    Runner runner;
 
-    if (argc < 2) {
-        std::cout << "[!] Usage: ./main.exe OPERATION_FILE\n";
+    if (argc > 2) {
+        std::cout << "[!] Usage: ./main.exe optional_path\n";
         return 1;
     }
 
-    OperationsFile ops_file(argv[1]);
-    ops_file.run(&heaps);
+    if (argc == 2) {
+        runner = Runner(argv[1]);
+    } else {
+        runner = Runner();
+    }
+
+    runner.run(&heaps);
 
     for (it = heaps.begin(); it != heaps.end(); it++) {
         it->print();

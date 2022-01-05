@@ -10,9 +10,10 @@
 
 using namespace std;
 
-class OperationsFile {
+class Runner {
     public:
-        OperationsFile(string path);
+        Runner(); // Get operations from stdin
+        Runner(string path); // Get operations from file
 
         void next(op_t * op);
         void print();
