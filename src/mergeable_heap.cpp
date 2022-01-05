@@ -49,7 +49,23 @@ void MergeableHeap::insert(int value) {
 }
 
 void MergeableHeap::insert_sorted(Node * node) {
+    Node * it = _head;
 
+    while (it != nullptr && it->value < node->value) {
+        it = it->next;
+    }
+
+    if (it == _head) {
+        node->next = it;
+        _head = node;
+    }
+    else if (it != nullptr) {
+        node->next = it->next;
+        it->next = node;
+    } else {
+        _tail->next = node;
+        _tail = node;
+    }
 }
 
 void MergeableHeap::insert_unsorted(Node * node) {
