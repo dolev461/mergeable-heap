@@ -62,6 +62,9 @@ void MergeableHeap::insert_sorted(Node * node) {
     else if (it != nullptr) {
         node->next = it->next;
         it->next = node;
+        if (_tail == it) {
+            _tail = node;
+        }
     } else {
         _tail->next = node;
         _tail = node;
