@@ -16,7 +16,7 @@ class MergeableHeap {
         void insert(int value);
         void print();
 
-        size_t length;
+        size_t size;
 
     private:
         Node * _head;

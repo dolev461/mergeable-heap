@@ -4,7 +4,7 @@ MergeableHeap::MergeableHeap() {
     _head = nullptr;
     _tail = nullptr;
 
-    length = 0;
+    size = 0;
 }
 
 MergeableHeap::~MergeableHeap() {
@@ -33,7 +33,7 @@ void MergeableHeap::insert(int value) {
         _tail = _tail->next;
     }
 
-    length += 1;
+    size++;
 }
 
 void MergeableHeap::print() {
