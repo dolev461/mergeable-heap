@@ -3,6 +3,12 @@
 
 using namespace std;
 
+enum Mode {
+    SORTED,
+    UNSORTED,
+    FOREIGN,
+};
+
 struct Node {
     int value;
     Node * next;
@@ -10,7 +16,7 @@ struct Node {
 
 class MergeableHeap {
     public:
-        MergeableHeap();
+        MergeableHeap(Mode mode);
         ~MergeableHeap();
 
         void insert(int value);
@@ -19,6 +25,12 @@ class MergeableHeap {
         size_t size;
 
     private:
+        void insert_sorted(Node * node);
+        void insert_unsorted(Node * node);
+        void insert_foreign(Node * node);
+
+    protected:
         Node * _head;
         Node * _tail;
+        Mode _mode;
 };

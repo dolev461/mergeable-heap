@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <list>
+#include <string.h>
 
 #include "runner.hpp"
 #include "mergeable_heap.hpp"
@@ -14,19 +15,32 @@ int main(int argc, char **argv)
     list<MergeableHeap> heaps;
     list<MergeableHeap>::iterator it;
     Runner runner;
+    Mode mode;
 
-    if (argc > 2) {
-        std::cout << "[!] Usage: ./main.exe optional_path\n";
+    if (argc == 3) {
+        runner = Runner(argv[2]);
+    } else if (argc == 2) {
+        runner = Runner();
+    } else {
+        cout << "[!] Usage: ./maman14.exe [sorted, unsorted, foreign] [path]\n";
         return 1;
     }
 
-    if (argc == 2) {
-        runner = Runner(argv[1]);
-    } else {
-        runner = Runner();
+    if (strcmp(argv[1], "sorted") == 0) {
+        mode = SORTED;
+    }
+    else if (strcmp(argv[1], "unsorted") == 0) {
+        mode = UNSORTED;
+    }
+    else if (strcmp(argv[1], "foreign") == 0) {
+        mode = FOREIGN;
+    }
+    else {
+        cout << "[-] Unsupported mergeable heap type! Use sorted/unsorted/foreign" << endl;
+        return 1;
     }
 
-    runner.run(&heaps);
+    runner.run(&heaps, mode);
 
     for (it = heaps.begin(); it != heaps.end(); it++) {
         it->print();

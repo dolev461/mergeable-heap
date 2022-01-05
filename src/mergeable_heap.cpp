@@ -1,10 +1,11 @@
 #include "mergeable_heap.hpp"
 
-MergeableHeap::MergeableHeap() {
+MergeableHeap::MergeableHeap(Mode mode) {
+    size = 0;
+
     _head = nullptr;
     _tail = nullptr;
-
-    size = 0;
+    _mode = mode;
 }
 
 MergeableHeap::~MergeableHeap() {
@@ -19,21 +20,45 @@ MergeableHeap::~MergeableHeap() {
 }
 
 void MergeableHeap::insert(int value) {
-    Node * tmp = new Node;
-    *tmp = {
+    Node * node = new Node;
+    *node = {
         .value = value,
         .next = nullptr,
     };
 
     if (nullptr == _head) {
-        _head = tmp;
-        _tail = tmp;
+        _head = node;
+        _tail = node;
     } else {
-        _tail->next = tmp;
-        _tail = _tail->next;
+        switch (_mode) {
+            case SORTED:
+                insert_sorted(node);
+                break;
+
+            case UNSORTED:
+                insert_unsorted(node);
+                break;
+
+            case FOREIGN:
+                insert_foreign(node);
+                break;
+        }
     }
 
     size++;
+}
+
+void MergeableHeap::insert_sorted(Node * node) {
+
+}
+
+void MergeableHeap::insert_unsorted(Node * node) {
+    _tail->next = node;
+    _tail = node;
+}
+
+void MergeableHeap::insert_foreign(Node * node) {
+
 }
 
 void MergeableHeap::print() {

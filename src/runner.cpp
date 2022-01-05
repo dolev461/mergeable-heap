@@ -7,7 +7,7 @@ Runner::Runner(string path) {
     _file.open(path);
 }
 
-void Runner::next(op_t * op) {
+void Runner::next(Operation * op) {
     string op_txt;
     stringstream int_val;
     int num = 0;
@@ -39,18 +39,9 @@ void Runner::next(op_t * op) {
     } 
 }
 
-void Runner::print() {
-    op_t op;
-    
-    do {
-        next(&op);
-        cout << op.id << endl;
-    } while (op.id != UNKNOWN);
-}
-
-bool Runner::run(list<MergeableHeap> * heaps) {
-    op_t op;
-    MergeableHeap * heap = new MergeableHeap();
+bool Runner::run(list<MergeableHeap> * heaps, Mode mode) {
+    Operation op;
+    MergeableHeap * heap = new MergeableHeap(mode);
 
     next(&op);
     if (MAKEHEAP != op.id) {
@@ -68,7 +59,7 @@ bool Runner::run(list<MergeableHeap> * heaps) {
             cout << "\nMake heap" << endl;
             // Push the last heap and create a new one
             heaps->push_back(*heap);
-            heap = new MergeableHeap();
+            heap = new MergeableHeap(mode);
             break;
 
         case INSERT:

@@ -15,10 +15,9 @@ class Runner {
         Runner(); // Get operations from stdin
         Runner(string path); // Get operations from file
 
-        void next(op_t * op);
-        void print();
+        void next(Operation * op);
 
-        bool run(list<MergeableHeap> * heaps);
+        bool run(list<MergeableHeap> * heaps, Mode mode);
 
     protected:
         ifstream _file;
