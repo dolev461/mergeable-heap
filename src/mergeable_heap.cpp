@@ -51,11 +51,12 @@ void MergeableHeap::insert(int value) {
 void MergeableHeap::insert_sorted(Node * node) {
     Node * it = _head;
 
-    while (it != nullptr && it->value < node->value) {
+
+    while (it->next != nullptr && it->next->value < node->value) {
         it = it->next;
     }
 
-    if (it == _head) {
+    if (node->value < it->value) {
         node->next = it;
         _head = node;
     }
@@ -66,6 +67,7 @@ void MergeableHeap::insert_sorted(Node * node) {
             _tail = node;
         }
     } else {
+        cout << "Replacing tails" << endl;
         _tail->next = node;
         _tail = node;
     }
@@ -77,7 +79,21 @@ void MergeableHeap::insert_unsorted(Node * node) {
 }
 
 void MergeableHeap::insert_foreign(Node * node) {
+    Node * del_node;
 
+    insert_sorted(node);
+    if (node->next != nullptr) {
+        cout << "Current " << node->value << " next " << node->next->value << endl;
+    }
+    if (node->next != nullptr && node->value == node->next->value) {
+        cout << "HERE" << endl;
+        del_node = node->next;
+        node->next = node->next->next;
+
+        delete del_node;
+    }
+
+    print();
 }
 
 void MergeableHeap::print() {
