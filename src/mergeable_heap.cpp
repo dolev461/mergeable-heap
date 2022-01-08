@@ -26,7 +26,7 @@ void MergeableHeap::insert(int value) {
         .next = nullptr,
     };
 
-    if (nullptr == _head) {
+    if (_head == nullptr) {
         _head = node;
         _tail = node;
     } else {

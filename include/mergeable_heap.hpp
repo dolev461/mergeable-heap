@@ -4,6 +4,7 @@
 using namespace std;
 
 enum Mode {
+    UNSUPPORTED = -1,
     SORTED,
     UNSORTED,
     FOREIGN,
@@ -30,7 +31,6 @@ class MergeableHeap {
         void insert_unsorted(Node * node);
         void insert_foreign(Node * node);
 
-    protected:
         Node * _head;
         Node * _tail;
         Mode _mode;

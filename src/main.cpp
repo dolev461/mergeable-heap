@@ -17,25 +17,17 @@ int main(int argc, char **argv)
     Runner runner;
     Mode mode;
 
-    if (argc == 3) {
-        runner = Runner(argv[2]);
-    } else if (argc == 2) {
+    if (argc == 2) {
+        runner = Runner(argv[1]);
+    } else if (argc == 1) {
         runner = Runner();
     } else {
-        cout << "[!] Usage: ./maman14.exe [sorted/unsorted/foreign] [path(optional)]\n";
+        cout << "[!] Usage: ./maman14.exe [path(optional)]\n";
         return 1;
     }
 
-    if (strcmp(argv[1], "sorted") == 0) {
-        mode = SORTED;
-    }
-    else if (strcmp(argv[1], "unsorted") == 0) {
-        mode = UNSORTED;
-    }
-    else if (strcmp(argv[1], "foreign") == 0) {
-        mode = FOREIGN;
-    }
-    else {
+    mode = runner.select_mode();
+    if (mode == UNSUPPORTED) {
         cout << "[-] Unsupported mergeable heap type! Use sorted/unsorted/foreign" << endl;
         return 1;
     }
