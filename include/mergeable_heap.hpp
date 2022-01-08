@@ -9,9 +9,10 @@ enum Mode {
     FOREIGN,
 };
 
-struct Node {
-    int value;
-    Node * next;
+class Node {
+    public:
+        int value;
+        Node * next;
 };
 
 class MergeableHeap {

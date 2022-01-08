@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     } else if (argc == 2) {
         runner = Runner();
     } else {
-        cout << "[!] Usage: ./maman14.exe [sorted, unsorted, foreign] [path]\n";
+        cout << "[!] Usage: ./maman14.exe [sorted/unsorted/foreign] [path(optional)]\n";
         return 1;
     }
 
