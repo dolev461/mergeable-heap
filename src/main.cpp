@@ -12,7 +12,7 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    list<MergeableHeap> heaps;
+    list<MergeableHeap> mheaps;
     list<MergeableHeap>::iterator it;
     Runner runner;
     Mode mode;
@@ -34,10 +34,10 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    runner.run(&heaps, mode);
+    runner.run(&mheaps, mode);
 
     cout << "\nFinal mergeable-heaps:" << endl;
-    for (it = heaps.begin(); it != heaps.end(); it++) {
+    for (it = mheaps.begin(); it != mheaps.end(); it++) {
         it->print();
     }
 

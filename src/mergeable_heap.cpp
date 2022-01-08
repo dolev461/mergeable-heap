@@ -77,6 +77,7 @@ void MergeableHeap::insert_sorted(Node * node) {
 }
 
 void MergeableHeap::insert_unsorted(Node * node) {
+    node->prev = _tail;
     _tail->next = node;
     _tail = node;
 }
@@ -131,15 +132,20 @@ Node * MergeableHeap::extract_minimum() {
         return nullptr;
     }
 
+    cout << "MIN NODE " << min_node->value << endl;
     if (min_node == _head) {
+        cout << "HERE 1" << endl;
         _head = min_node->next;
         _head->prev = nullptr;
     }
     else if (min_node == _tail) {
+        cout << "HERE 2" << endl;
         _tail = min_node->prev;
         _tail->next = nullptr;
     } else {
+        cout << "HERE 3" << min_node->prev << endl;
         min_node->prev->next = min_node->next;
+        cout << "HERE 4" << endl;
         min_node->next->prev = min_node->prev;
     }
 
@@ -155,4 +161,35 @@ void MergeableHeap::print() {
     }
 
     cout << it->value << endl;
+}
+
+void MergeableHeap::merge(MergeableHeap * mheap) {
+    cout << "MERGING" << endl;
+    if (mheap == nullptr || mheap->_head == nullptr) {
+        return;
+    }
+
+    switch (_mode) {
+        case SORTED:
+            merge_sorted(mheap);
+            break;
+
+        case UNSORTED:
+        case FOREIGN:
+            cout << "HERE" << endl;
+            mheap->_head->prev = _tail;
+
+            _tail->next = mheap->_head;
+            _tail = mheap->_tail;
+
+            mheap->_head = _head;
+            break;
+
+        default:
+            return;
+    }
+}
+
+void MergeableHeap::merge_sorted(MergeableHeap * sorted_mheap) {
+
 }

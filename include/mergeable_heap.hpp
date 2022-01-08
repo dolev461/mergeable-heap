@@ -24,6 +24,7 @@ class MergeableHeap {
         void insert(int value);
         Node * get_minimum();
         Node * extract_minimum();
+        void merge(MergeableHeap * mheap);
 
         void print();
 
@@ -33,6 +34,8 @@ class MergeableHeap {
         void insert_sorted(Node * node);
         void insert_unsorted(Node * node);
         void insert_foreign(Node * node);
+
+        void merge_sorted(MergeableHeap * sorted_mheap);
 
         Node * _head;
         Node * _tail;

@@ -30,9 +30,9 @@ Mode Runner::select_mode() {
     return mode;
 }
 
-bool Runner::run(list<MergeableHeap> * heaps, Mode mode) {
+bool Runner::run(list<MergeableHeap> * mheaps, Mode mode) {
     Operation op;
-    MergeableHeap * heap = new MergeableHeap(mode);
+    MergeableHeap * mheap = new MergeableHeap(mode);
 
     next(&op);
     if (MAKEHEAP != op.id) {
@@ -45,25 +45,33 @@ bool Runner::run(list<MergeableHeap> * heaps, Mode mode) {
         switch (op.id)
         {
         case MAKEHEAP:
-            // Push the last heap and create a new one
-            heaps->push_back(*heap);
-            heap = new MergeableHeap(mode);
+            // Push the last mergeable-heap and create a new one
+            mheaps->push_back(*mheap);
+            mheap = new MergeableHeap(mode);
             break;
 
         case INSERT:
-            heap->insert(op.insert.value);
-            heap->print();
+            mheap->insert(op.insert.value);
+            mheap->print();
             break;
         
         case MINIMUM:
-            cout << "[!] Minimum of last heap: " << heap->get_minimum()->value << endl;
+            cout << "[!] Minimum of last mergeable-heap: " << mheap->get_minimum()->value << endl;
             break;
 
         case EXTRACT_MINIMUM:
-            cout << "[!] Extracted minimum of last heap: " << heap->extract_minimum()->value << endl;
+            cout << "[!] Extracted minimum of last mergeable-heap: " << mheap->extract_minimum()->value << endl;
+            break;
+
+        case UNION:
+            cout << "[!] Merging mergeable-heaps!" << endl;
+            mheap->merge(&mheaps->back());
+            mheaps->pop_back();
+            mheap->print();
             break;
 
         case EXIT:
+            mheaps->push_back(*mheap);
             cout << "[+] Bye bye :)" << endl;
             break;
 
@@ -73,7 +81,7 @@ bool Runner::run(list<MergeableHeap> * heaps, Mode mode) {
         }
     } while (op.id != UNKNOWN && op.id != EXIT);
 
-    heaps->push_back(*heap);
+    mheaps->push_back(*mheap);
     return true;
 }
 
@@ -115,6 +123,9 @@ void Runner::next(Operation * op) {
     }
     else if (op_txt.compare("ExtractMinimum") == 0) {
         op->id = EXTRACT_MINIMUM;
+    }
+    else if (op_txt.compare("Union") == 0) {
+        op->id = UNION;
     }
     else if (op_txt.empty()) {
         op->id = EXIT;

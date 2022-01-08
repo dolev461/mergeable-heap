@@ -6,6 +6,8 @@ enum OpId {
     INSERT = 1,
     MINIMUM = 2,
     EXTRACT_MINIMUM = 3,
+    UNION = 4,
+
     EXIT,
 };
 
