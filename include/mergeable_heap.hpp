@@ -10,10 +10,10 @@ enum Mode {
     FOREIGN,
 };
 
-class Node {
-    public:
-        int value;
-        Node * next;
+struct Node {
+    int value;
+    Node * next;
+    Node * prev;
 };
 
 class MergeableHeap {
@@ -22,6 +22,9 @@ class MergeableHeap {
         ~MergeableHeap();
 
         void insert(int value);
+        Node * get_minimum();
+        Node * extract_minimum();
+
         void print();
 
         size_t size;

@@ -4,10 +4,9 @@ enum OpId {
     UNKNOWN = -1,
     MAKEHEAP = 0,
     INSERT = 1,
-};
-
-struct OpMakeHeap {
-    OpId id;
+    MINIMUM = 2,
+    EXTRACT_MINIMUM = 3,
+    EXIT,
 };
 
 struct OpInsert {
@@ -17,6 +16,6 @@ struct OpInsert {
 
 union Operation {
     OpId id;
-    OpMakeHeap makeheap;
+    /* Space for custom operations which need more values */
     OpInsert insert;
 };

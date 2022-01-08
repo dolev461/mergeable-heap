@@ -18,11 +18,13 @@ int main(int argc, char **argv)
     Mode mode;
 
     if (argc == 2) {
+        // Use file input
         runner = Runner(argv[1]);
     } else if (argc == 1) {
+        // Use user input
         runner = Runner();
     } else {
-        cout << "[!] Usage: ./maman14.exe [path(optional)]\n";
+        cout << "[!] Usage: ./maman14 [path(optional)]\n";
         return 1;
     }
 
@@ -34,6 +36,7 @@ int main(int argc, char **argv)
 
     runner.run(&heaps, mode);
 
+    cout << "\nFinal mergeable-heaps:" << endl;
     for (it = heaps.begin(); it != heaps.end(); it++) {
         it->print();
     }

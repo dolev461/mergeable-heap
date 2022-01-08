@@ -15,7 +15,6 @@ Mode Runner::select_mode() {
     getline(cin, mode_str);
 
     if (mode_str.compare("sorted") == 0) {
-        cout << "SORTED" << endl;
         mode = SORTED;
     }
     else if (mode_str.compare("unsorted") == 0) {
@@ -37,33 +36,42 @@ bool Runner::run(list<MergeableHeap> * heaps, Mode mode) {
 
     next(&op);
     if (MAKEHEAP != op.id) {
-        // Operations file must start with MakeHeap
+        cout << "[-] The first operation must be MakeHeap!" << endl;
         return false;
     }
-
-    cout << "Make heap" << endl;
 
     do {
         next(&op);
         switch (op.id)
         {
         case MAKEHEAP:
-            cout << "\nMake heap" << endl;
             // Push the last heap and create a new one
             heaps->push_back(*heap);
             heap = new MergeableHeap(mode);
             break;
 
         case INSERT:
-            cout << "Insert " << op.insert.value << endl;
             heap->insert(op.insert.value);
+            heap->print();
             break;
         
+        case MINIMUM:
+            cout << "[!] Minimum of last heap: " << heap->get_minimum()->value << endl;
+            break;
+
+        case EXTRACT_MINIMUM:
+            cout << "[!] Extracted minimum of last heap: " << heap->extract_minimum()->value << endl;
+            break;
+
+        case EXIT:
+            cout << "[+] Bye bye :)" << endl;
+            break;
+
         default:
-            cout << "\nEND\n" << endl;
+            cout << "[-] Unsupported operation - exiting!" << endl;
             break;
         }
-    } while (op.id != UNKNOWN);
+    } while (op.id != UNKNOWN && op.id != EXIT);
 
     heaps->push_back(*heap);
     return true;
@@ -79,6 +87,8 @@ void Runner::next(Operation * op) {
     if (_file.is_open()) {
         getline(_file, op_txt);
     } else {
+        cout << "[+] New operation [MakeHeap/Insert X/Minimum/ExtractMinimum/Union/Exit]:" << endl;
+        cout << ">> ";
         getline(cin, op_txt);
     }
 
@@ -89,8 +99,9 @@ void Runner::next(Operation * op) {
 
     if (op_txt.compare("MakeHeap") == 0) {
         // Makeheap command
-        op->makeheap.id = MAKEHEAP;
-    } else if (op_txt.rfind("Insert", 0) == 0) {
+        op->id = MAKEHEAP;
+    }
+    else if (op_txt.rfind("Insert", 0) == 0) {
         // Insert command - search for insert value
         op_txt.erase(0, op_txt.find(" ") + 1);
         int_val << op_txt;
@@ -98,5 +109,14 @@ void Runner::next(Operation * op) {
 
         op->insert.id = INSERT;
         op->insert.value = num;
-    } 
+    }
+    else if (op_txt.compare("Minimum") == 0) {
+        op->id = MINIMUM;
+    }
+    else if (op_txt.compare("ExtractMinimum") == 0) {
+        op->id = EXTRACT_MINIMUM;
+    }
+    else if (op_txt.empty()) {
+        op->id = EXIT;
+    }
 }
