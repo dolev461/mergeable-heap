@@ -132,20 +132,15 @@ Node * MergeableHeap::extract_minimum() {
         return nullptr;
     }
 
-    cout << "MIN NODE " << min_node->value << endl;
     if (min_node == _head) {
-        cout << "HERE 1" << endl;
         _head = min_node->next;
         _head->prev = nullptr;
     }
     else if (min_node == _tail) {
-        cout << "HERE 2" << endl;
         _tail = min_node->prev;
         _tail->next = nullptr;
     } else {
-        cout << "HERE 3" << min_node->prev << endl;
         min_node->prev->next = min_node->next;
-        cout << "HERE 4" << endl;
         min_node->next->prev = min_node->prev;
     }
 
@@ -155,16 +150,15 @@ Node * MergeableHeap::extract_minimum() {
 void MergeableHeap::print() {
     Node * it = _head;
 
-    while (it->next != nullptr) {
+    while (it != nullptr) {
         cout << it ->value << " -> ";
         it = it->next;
     }
 
-    cout << it->value << endl;
+    cout << endl;
 }
 
 void MergeableHeap::merge(MergeableHeap * mheap) {
-    cout << "MERGING" << endl;
     if (mheap == nullptr || mheap->_head == nullptr) {
         return;
     }
@@ -176,13 +170,14 @@ void MergeableHeap::merge(MergeableHeap * mheap) {
 
         case UNSORTED:
         case FOREIGN:
-            cout << "HERE" << endl;
             mheap->_head->prev = _tail;
 
             _tail->next = mheap->_head;
             _tail = mheap->_tail;
 
-            mheap->_head = _head;
+            /* Take ownership over the nodes */
+            mheap->_head = nullptr;
+            mheap->_tail = nullptr;
             break;
 
         default:

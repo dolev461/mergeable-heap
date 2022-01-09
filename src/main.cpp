@@ -12,8 +12,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-    list<MergeableHeap> mheaps;
-    list<MergeableHeap>::iterator it;
+    list<MergeableHeap*> mheaps;
+    list<MergeableHeap*>::iterator it;
     Runner runner;
     Mode mode;
 
@@ -38,7 +38,8 @@ int main(int argc, char **argv)
 
     cout << "\nFinal mergeable-heaps:" << endl;
     for (it = mheaps.begin(); it != mheaps.end(); it++) {
-        it->print();
+        (*it)->print();
+        delete *it;
     }
 
     return 0;

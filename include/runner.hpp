@@ -16,7 +16,7 @@ class Runner {
         Runner(string path); // Get operations from file
 
         Mode select_mode();
-        bool run(list<MergeableHeap> * heaps, Mode mode);
+        bool run(list<MergeableHeap*> * heaps, Mode mode);
 
     private:
         void next(Operation * op);

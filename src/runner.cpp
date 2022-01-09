@@ -30,9 +30,10 @@ Mode Runner::select_mode() {
     return mode;
 }
 
-bool Runner::run(list<MergeableHeap> * mheaps, Mode mode) {
-    Operation op;
-    MergeableHeap * mheap = new MergeableHeap(mode);
+bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
+    Operation op = {UNKNOWN};
+    MergeableHeap * mheap = nullptr;
+    MergeableHeap * last = nullptr;
 
     next(&op);
     if (MAKEHEAP != op.id) {
@@ -41,13 +42,11 @@ bool Runner::run(list<MergeableHeap> * mheaps, Mode mode) {
     }
 
     do {
-        next(&op);
         switch (op.id)
         {
         case MAKEHEAP:
-            // Push the last mergeable-heap and create a new one
-            mheaps->push_back(*mheap);
             mheap = new MergeableHeap(mode);
+            mheaps->push_back(mheap);
             break;
 
         case INSERT:
@@ -56,22 +55,32 @@ bool Runner::run(list<MergeableHeap> * mheaps, Mode mode) {
             break;
         
         case MINIMUM:
-            cout << "[!] Minimum of last mergeable-heap: " << mheap->get_minimum()->value << endl;
+            cout << "[!] Minimum: " << mheap->get_minimum()->value << endl;
             break;
 
         case EXTRACT_MINIMUM:
-            cout << "[!] Extracted minimum of last mergeable-heap: " << mheap->extract_minimum()->value << endl;
+            cout << "[!] Extracted minimum: " << mheap->extract_minimum()->value << endl;
             break;
 
         case UNION:
             cout << "[!] Merging mergeable-heaps!" << endl;
-            mheap->merge(&mheaps->back());
+            /* Pop the current mergeable-heap */
+
             mheaps->pop_back();
+            last = mheaps->back();
+
+            last->merge(mheap);
+
+            delete mheap;
+            mheap = last;
+
+            /* Destroy the element */
+            //mheaps->pop_back();
+            //delete last;
             mheap->print();
             break;
 
         case EXIT:
-            mheaps->push_back(*mheap);
             cout << "[+] Bye bye :)" << endl;
             break;
 
@@ -79,9 +88,10 @@ bool Runner::run(list<MergeableHeap> * mheaps, Mode mode) {
             cout << "[-] Unsupported operation - exiting!" << endl;
             break;
         }
+
+        next(&op);
     } while (op.id != UNKNOWN && op.id != EXIT);
 
-    mheaps->push_back(*mheap);
     return true;
 }
 
