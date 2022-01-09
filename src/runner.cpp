@@ -74,8 +74,8 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
             }
 
             cout << "[!] Merging mergeable-heaps!" << endl;
-            /* Pop the current mergeable-heap */
 
+            /* Pop the current mergeable-heap */
             mheaps->pop_back();
             last = mheaps->back();
 
@@ -84,9 +84,6 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
             delete mheap;
             mheap = last;
 
-            /* Destroy the element */
-            //mheaps->pop_back();
-            //delete last;
             mheap->print();
             break;
 

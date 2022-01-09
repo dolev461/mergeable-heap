@@ -1,8 +1,6 @@
 #include "mergeable_heap.hpp"
 
 MergeableHeap::MergeableHeap(Mode mode) {
-    size = 0;
-
     _head = nullptr;
     _tail = nullptr;
     _mode = mode;
@@ -45,8 +43,6 @@ void MergeableHeap::insert(int value) {
                 break;
         }
     }
-
-    size++;
 }
 
 void MergeableHeap::insert_sorted(Node * node) {
