@@ -79,6 +79,9 @@ Node * MergeableHeap::insert_sorted(Node * node, Node * init_node) {
         if (_tail == it) {
             _tail = node;
         }
+
+        /* Return the last ordered node */
+        it = node;
     }
 
     return it;
@@ -185,14 +188,13 @@ void MergeableHeap::merge(MergeableHeap * mheap) {
             /* Connect this tail to the other mheap */
             _tail->next = mheap->_head;
             _tail = mheap->_tail;
-
-            /* Take ownership over the nodes */
             break;
 
         default:
             return;
     }
 
+    /* Take ownership over the nodes */
     mheap->_head = nullptr;
     mheap->_tail = nullptr;
 }

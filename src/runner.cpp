@@ -64,6 +64,11 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
             break;
 
         case UNION:
+            if (mheaps->size() < 2) {
+                cout << "[-] There is no mergeable-heaps to merge" << endl;
+                break;
+            }
+
             cout << "[!] Merging mergeable-heaps!" << endl;
             /* Pop the current mergeable-heap */
 
