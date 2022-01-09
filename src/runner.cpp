@@ -45,6 +45,7 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
         switch (op.id)
         {
         case MAKEHEAP:
+            cout << "[!] Creating a new mergeable-heap" << endl;
             mheap = new MergeableHeap(mode);
             mheaps->push_back(mheap);
             break;

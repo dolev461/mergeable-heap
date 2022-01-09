@@ -32,6 +32,7 @@ class MergeableHeap {
 
     private:
         void insert_sorted(Node * node);
+        Node * insert_sorted(Node * node, Node * init_node);
         void insert_unsorted(Node * node);
         void insert_foreign(Node * node);
 

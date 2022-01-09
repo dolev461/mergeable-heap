@@ -50,17 +50,23 @@ void MergeableHeap::insert(int value) {
 }
 
 void MergeableHeap::insert_sorted(Node * node) {
-    Node * it = _head;
+    insert_sorted(node, _head);
+}
+
+Node * MergeableHeap::insert_sorted(Node * node, Node * init_node) {
+    Node * it = init_node;
 
     while (it->next != nullptr && it->next->value < node->value) {
         it = it->next;
     }
 
     if (node->value < it->value) {
-        /* If node->value is smaller than it value than it means we need to replace the head */
         node->next = it;
+        node->prev = it->prev;
         it->prev = node;
-        _head = node;
+        if (_head == it) {
+            _head = node;
+        }
     }
     else {
         if (it->next != nullptr) {
@@ -74,6 +80,8 @@ void MergeableHeap::insert_sorted(Node * node) {
             _tail = node;
         }
     }
+
+    return it;
 }
 
 void MergeableHeap::insert_unsorted(Node * node) {
@@ -160,6 +168,7 @@ void MergeableHeap::print() {
 
 void MergeableHeap::merge(MergeableHeap * mheap) {
     if (mheap == nullptr || mheap->_head == nullptr) {
+        /* No nodes to merge */
         return;
     }
 
@@ -170,21 +179,33 @@ void MergeableHeap::merge(MergeableHeap * mheap) {
 
         case UNSORTED:
         case FOREIGN:
+            /* Connect the other head to this tail */
             mheap->_head->prev = _tail;
 
+            /* Connect this tail to the other mheap */
             _tail->next = mheap->_head;
             _tail = mheap->_tail;
 
             /* Take ownership over the nodes */
-            mheap->_head = nullptr;
-            mheap->_tail = nullptr;
             break;
 
         default:
             return;
     }
+
+    mheap->_head = nullptr;
+    mheap->_tail = nullptr;
 }
 
 void MergeableHeap::merge_sorted(MergeableHeap * sorted_mheap) {
+    Node * this_it = _head;
+    Node * other_it = sorted_mheap->_head;
+    Node * other_next;
 
+    while (this_it != nullptr && other_it != nullptr) {
+        other_next = other_it->next;
+        /* Detach the inserted node from sorted_mheap */
+        this_it = insert_sorted(other_it, this_it);
+        other_it = other_next;
+    }
 }
