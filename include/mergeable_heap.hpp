@@ -26,6 +26,8 @@ class MergeableHeap {
         Node * extract_minimum();
         void merge(MergeableHeap * mheap);
 
+        void detach(Node * node);
+        void pop(Node * node);
         void print();
 
         size_t size;
@@ -33,10 +35,15 @@ class MergeableHeap {
     private:
         void insert_sorted(Node * node);
         Node * insert_sorted(Node * node, Node * init_node);
+
         void insert_unsorted(Node * node);
+
         void insert_foreign(Node * node);
+        bool is_exists(int value);
 
         void merge_sorted(MergeableHeap * sorted_mheap);
+        void merge_unsorted(MergeableHeap * unsorted_mheap);
+        void merge_foreign(MergeableHeap * unsorted_foreign_mheap);
 
         Node * _head;
         Node * _tail;

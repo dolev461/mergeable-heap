@@ -94,15 +94,21 @@ void MergeableHeap::insert_unsorted(Node * node) {
 }
 
 void MergeableHeap::insert_foreign(Node * node) {
+    if (!is_exists(node->value)) {
+        insert_unsorted(node);
+    } else {
+        cout << "[-] Value " <<  node->value << " already exists - skipping" << endl;
+    }
+}
+
+bool MergeableHeap::is_exists(int value) {
     Node * it = _head;
 
-    while (it != nullptr && it->value != node->value) {
+    while (it != nullptr && it->value != value) {
         it = it->next;
     }
 
-    if (it == nullptr) {
-        insert_unsorted(node);
-    }
+    return it != nullptr;
 }
 
 Node * MergeableHeap::get_minimum() {
@@ -138,35 +144,9 @@ Node * MergeableHeap::get_minimum() {
 Node * MergeableHeap::extract_minimum() {
     Node * min_node = get_minimum();
 
-    if (min_node == nullptr) {
-        // Empty data
-        return nullptr;
-    }
-
-    if (min_node == _head) {
-        _head = min_node->next;
-        _head->prev = nullptr;
-    }
-    else if (min_node == _tail) {
-        _tail = min_node->prev;
-        _tail->next = nullptr;
-    } else {
-        min_node->prev->next = min_node->next;
-        min_node->next->prev = min_node->prev;
-    }
+    detach(min_node);
 
     return min_node;
-}
-
-void MergeableHeap::print() {
-    Node * it = _head;
-
-    while (it != nullptr) {
-        cout << it ->value << " -> ";
-        it = it->next;
-    }
-
-    cout << endl;
 }
 
 void MergeableHeap::merge(MergeableHeap * mheap) {
@@ -181,13 +161,11 @@ void MergeableHeap::merge(MergeableHeap * mheap) {
             break;
 
         case UNSORTED:
-        case FOREIGN:
-            /* Connect the other head to this tail */
-            mheap->_head->prev = _tail;
+            merge_unsorted(mheap);
+            break;
 
-            /* Connect this tail to the other mheap */
-            _tail->next = mheap->_head;
-            _tail = mheap->_tail;
+        case FOREIGN:
+            merge_foreign(mheap);
             break;
 
         default:
@@ -206,8 +184,74 @@ void MergeableHeap::merge_sorted(MergeableHeap * sorted_mheap) {
 
     while (this_it != nullptr && other_it != nullptr) {
         other_next = other_it->next;
+
         /* Detach the inserted node from sorted_mheap */
         this_it = insert_sorted(other_it, this_it);
         other_it = other_next;
     }
+}
+
+void MergeableHeap::merge_unsorted(MergeableHeap * unsorted_mheap) {
+    /* Connect the other head to this tail */
+    unsorted_mheap->_head->prev = _tail;
+
+    /* Connect this tail to the other mheap */
+    _tail->next = unsorted_mheap->_head;
+    _tail = unsorted_mheap->_tail;
+}
+
+void MergeableHeap::merge_foreign(MergeableHeap * unsorted_foreign_mheap) {
+    Node * it = unsorted_foreign_mheap->_head;
+    Node * next = nullptr;
+
+    while (it != nullptr) {
+        next = it->next;
+
+        if (is_exists(it->value)) {
+            cout << "[-] Value " <<  it->value << " already exists - popping" << endl;
+            unsorted_foreign_mheap->pop(it);
+        }
+
+        it = next;
+    }
+
+    merge_unsorted(unsorted_foreign_mheap);
+}
+
+void MergeableHeap::detach(Node * node) {
+    if (node == nullptr) {
+        return;
+    }
+
+    if (_head == node) {
+        _head = node->next;
+        _head->prev = nullptr;
+    }
+    else if (_tail == node) {
+        _tail = node->prev;
+        _tail->next = nullptr;
+    } else {
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+    /* Transfer of ownership */
+    node->next = nullptr;
+    node->prev = nullptr;
+}
+
+void MergeableHeap::pop(Node * node) {
+    detach(node);
+    delete node;
+}
+
+void MergeableHeap::print() {
+    Node * it = _head;
+
+    while (it != nullptr) {
+        cout << it ->value << " -> ";
+        it = it->next;
+    }
+
+    cout << endl;
 }

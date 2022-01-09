@@ -34,6 +34,7 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
     Operation op = {UNKNOWN};
     MergeableHeap * mheap = nullptr;
     MergeableHeap * last = nullptr;
+    Node * node;
 
     next(&op);
     if (MAKEHEAP != op.id) {
@@ -60,7 +61,10 @@ bool Runner::run(list<MergeableHeap*> * mheaps, Mode mode) {
             break;
 
         case EXTRACT_MINIMUM:
-            cout << "[!] Extracted minimum: " << mheap->extract_minimum()->value << endl;
+            node = mheap->extract_minimum();
+            cout << "[!] Extracted minimum: " << node->value << endl;
+            /* Transfer of ownership over the node */
+            delete node;
             break;
 
         case UNION:
