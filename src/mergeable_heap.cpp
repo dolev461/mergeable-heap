@@ -52,32 +52,34 @@ void MergeableHeap::insert_sorted(Node * node) {
 Node * MergeableHeap::insert_sorted(Node * node, Node * init_node) {
     Node * it = init_node;
 
-    while (it->next != nullptr && it->next->value < node->value) {
+    while (it != nullptr && it->value < node->value) {
         it = it->next;
     }
 
-    if (node->value < it->value) {
-        node->next = it;
-        node->prev = it->prev;
-        it->prev = node;
-        if (_head == it) {
-            _head = node;
-        }
-    }
-    else {
-        if (it->next != nullptr) {
-            it->next->prev = node;
-        }
+    if (it == nullptr) {
+        /* Insert node to tail */
+        node->prev = _tail;
+        node->next = nullptr;
 
-        node->next = it->next;
-        node->prev = it;
-        it->next = node;
-        if (_tail == it) {
-            _tail = node;
-        }
+        _tail->next = node;
+        _tail = node;
 
         /* Return the last ordered node */
         it = node;
+    }
+    else if (it == _head) {
+        /* Insert node to head */
+        node->next = _head;
+        _head->prev = node;
+        _head = node;
+    }
+    else {
+        /* Insert node in the middle before iterator */
+        node->prev = it->prev;
+        node->next = it;
+
+        it->prev->next = node;
+        it->prev = node;
     }
 
     return it;
