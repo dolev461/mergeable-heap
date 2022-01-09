@@ -180,7 +180,7 @@ void MergeableHeap::merge_sorted(MergeableHeap * sorted_mheap) {
     Node * other_it = sorted_mheap->_head;
     Node * other_next;
 
-    while (this_it != nullptr && other_it != nullptr) {
+    while (other_it != nullptr) {
         other_next = other_it->next;
 
         /* Detach the inserted node from sorted_mheap */
